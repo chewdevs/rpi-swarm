@@ -1,7 +1,0 @@
-- hosts: manager
-  user: pi
-  become: yes
-  roles:
-    - common
-    - docker
-

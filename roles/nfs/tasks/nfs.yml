@@ -1,0 +1,34 @@
+- name: install nfs-common package
+  apt:
+    name: nfs-common
+    state: present
+    update_cache: yes
+  tags: nfs
+
+- name: create Movie NFS directory
+  file:
+    path: '{{ NFS_MOVIES_PATH }}'
+    state: directory
+  tags: nfs,mount
+
+- name: create Series NFS directory
+  file:
+    path: '{{ NFS_SERIES_PATH }}'
+    state: directory
+  tags: nfs,mount
+
+- name: mount Movies nfs share
+  mount:
+    name: '{{ NFS_MOVIES_PATH }}'
+    src: '{{ NFS_SERVER_IP }}:{{ NFS_MOVIES_EXPORT }}'
+    fstype: nfs
+    state: mounted
+  tags: nfs,mount
+
+- name: mount Series nfs share
+  mount:
+    name: '{{ NFS_SERIES_PATH }}'
+    src: '{{ NFS_SERVER_IP }}:{{ NFS_SERIES_EXPORT }}'
+    fstype: nfs
+    state: mounted
+  tags: nfs,mount
