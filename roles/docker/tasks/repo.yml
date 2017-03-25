@@ -1,0 +1,36 @@
+- name: add Hypriot/Schatzkiste repo key
+  apt_key: 
+    url: https://packagecloud.io/Hypriot/Schatzkiste/gpgkey
+    state: present
+  tags: docker,repo-hypriot
+
+- name: add Hypriot/Schatzkiste repo
+  apt_repository:
+    repo: deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ jessie main
+    state: present
+  tags: docker,repo-hypriot
+
+- name: add Hypriot/rpi repo key
+  apt_key: 
+    url: https://packagecloud.io/Hypriot/rpi/gpgkey
+    state: present
+  tags: docker,repo-hypriot
+
+- name: add Hypriot/rpi repo
+  apt_repository:
+    repo: deb https://packagecloud.io/Hypriot/rpi/debian/ jessie main
+    state: present
+  tags: docker,repo-hypriot
+
+- name: add docker repo key
+  apt_key: 
+    keyserver: hkp://p80.pool.sks-keyservers.net:80
+    id: 58118E89F3A912897C070ADBF76221572C52609D
+    state: present
+  tags: docker,repo-docker
+
+- name: add docker repo
+  apt_repository:
+    repo: deb [arch=armhf] https://apt.dockerproject.org/repo raspbian-jessie main
+    state: present
+  tags: docker,repo-docker

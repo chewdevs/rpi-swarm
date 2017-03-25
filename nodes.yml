@@ -1,0 +1,6 @@
+- hosts: worker
+  user: pirate
+  become: yes
+  roles:
+    - common
+    - docker

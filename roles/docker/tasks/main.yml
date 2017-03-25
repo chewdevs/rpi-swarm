@@ -1,0 +1,3 @@
+- include: repo.yml
+- include: docker.yml
+- include: docker-optimizations.yml

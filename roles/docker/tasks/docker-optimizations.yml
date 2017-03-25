@@ -1,0 +1,8 @@
+- name: Add cgroup for CPU limits to bootparams
+  lineinfile:
+    dest: /boot/cmdline.txt
+    regexp: '^(.*?)(\s*cgroup_enable=cpuset cgroup_enable=memory\s*)?$'
+    line: '\1 cgroup_enable=cpuset cgroup_enable=memory'
+    backrefs: true
+    state: present
+  tags: docker,docker-optimizations

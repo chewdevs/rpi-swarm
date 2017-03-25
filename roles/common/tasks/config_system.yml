@@ -1,0 +1,21 @@
+- name: set hostname
+  hostname:
+    name: "{{ hostname }}"
+  tags: common,config_system,hostname
+
+- name: check if /boot/device-init.yaml exists
+  stat:
+    path: /boot/device-init.yaml
+  register: st
+  tags: common,config_system,hostname
+
+- name: change hostname for hypriot
+  lineinfile:
+    dest: /boot/device-init.yaml
+    regexp: '^hostname'
+    line: 'hostname: {{ hostname }}'
+    state: present
+  when: st.stat.exists
+  tags: common,config_system,hostname
+
+

@@ -1,0 +1,2 @@
+- include: config_system.yml
+- include: update_apt.yml

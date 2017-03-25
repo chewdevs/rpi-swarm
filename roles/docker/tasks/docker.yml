@@ -1,0 +1,13 @@
+#- name: install hypriot kernel
+#  apt:
+#    name: linux-image-4.4.43-hypriotos-v7+
+#    state: present
+#    update_cache: yes
+#  tags: docker,kernel
+
+- name: install docker-engine
+  apt:
+    name: docker-engine
+    state: present
+    update_cache: yes
+  tags: docker,docker-engine
