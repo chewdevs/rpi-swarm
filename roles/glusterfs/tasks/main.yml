@@ -1,2 +1,2 @@
 - include: lvm.yml
-
+- include: glusterfs.yml

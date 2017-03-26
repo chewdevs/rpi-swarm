@@ -1,9 +1,11 @@
-- name: install lvm package
+- name: install lvm2 and xfs package
   apt:
-    name: lvm2
+    name: 
+      - lvm2
+      - xfsprogs
     state: present
     update_cache: yes
-  tags: glusterfs,lvm
+  tags: glusterfs,lvm,xfs
 
 - name: create glusterfs VG
   lvg:
@@ -17,5 +19,12 @@
     vg: '{{ glusterfs_vg_name }}'
     lv: '{{ glusterfs_lv_name }}'
     size: 100%FREE
+    shrink: false
     state: present
   tags: glusterfs,lvm
+
+- name: format LV with XFS
+  filesystem:
+    fstype: xfs
+    dev: '/dev/{{ glusterfs_vg_name }}/{{ glusterfs_lv_name }}'
+  tags: glusterfs,xfs
