@@ -4,3 +4,27 @@
    state: present
    update_cache: yes
   tags: glusterfs
+
+- name: Connect to Gluster peers.
+  shell: "gluster peer probe {{ item }}"
+  register: gluster_peer_probe
+  changed_when: "'already in peer list' not in gluster_peer_probe.stdout"
+  failed_when: false
+  with_items: groups.worker
+  tags: glusterfs,glusterfs_cluster
+
+- name: create gluster volume
+  gluster_volume:
+    name: docker_volume
+    state: present
+    bricks: '{{ glusterfs_dir }}'
+    replicas: '{{ glusterfs_replicas }}'
+    cluster:
+      - worker1
+      - worker2
+  tags: glusterfs,glusterfs_volume
+
+- name: Display all variables/facts known for a host
+  debug:
+    var: hostvars[inventory_hostname]
+  tags: vars

@@ -1,3 +1,5 @@
 glusterfs_part: mmcblk0p3
 glusterfs_vg_name: vg_glusterfs
 glusterfs_lv_name: lv_glusterfs
+glusterfs_dir: /var/lib/glusterfs
+glusterfs_replicas: 2

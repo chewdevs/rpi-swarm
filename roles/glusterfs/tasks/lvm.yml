@@ -28,3 +28,18 @@
     fstype: xfs
     dev: '/dev/{{ glusterfs_vg_name }}/{{ glusterfs_lv_name }}'
   tags: glusterfs,xfs
+
+- name: create /var/lib/glusterfs directory
+  file:
+    path: '{{ glusterfs_dir }}'
+    state: directory
+  tags: glusterfs,xfs
+
+- name: mount glusterfs LV
+  mount:
+    name: '{{ glusterfs_dir }}'
+    src: '/dev/{{ glusterfs_vg_name }}/{{ glusterfs_lv_name }}'
+    fstype: xfs
+    state: mounted
+  tags: glusterfs,xfs
+  
