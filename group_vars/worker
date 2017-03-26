@@ -1,0 +1,3 @@
+glusterfs_part: mmcblk0p3
+glusterfs_vg_name: vg_glusterfs
+glusterfs_lv_name: lv_glusterfs

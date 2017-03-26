@@ -1,0 +1,21 @@
+- name: install lvm package
+  apt:
+    name: lvm2
+    state: present
+    update_cache: yes
+  tags: glusterfs,lvm
+
+- name: create glusterfs VG
+  lvg:
+    vg: '{{ glusterfs_vg_name }}'
+    pvs: '/dev/{{ glusterfs_part }}'
+    state: present
+  tags: glusterfs,lvm
+
+- name: create glusterfs LV
+  lvol:
+    vg: '{{ glusterfs_vg_name }}'
+    lv: '{{ glusterfs_lv_name }}'
+    size: 100%FREE
+    state: present
+  tags: glusterfs,lvm
