@@ -15,16 +15,32 @@
 
 - name: create gluster volume
   gluster_volume:
-    name: docker_volume
+    name: '{{ glusterfs_volume_name }}'
     state: present
     bricks: '{{ glusterfs_dir }}'
     replicas: '{{ glusterfs_replicas }}'
-    cluster:
-      - worker1
-      - worker2
+    cluster: '{{ groups.worker }}'
+    transport: '{{ glusterfs_transport_type }}'
+    force: true
+  run_once: true
   tags: glusterfs,glusterfs_volume
 
-- name: Display all variables/facts known for a host
-  debug:
-    var: hostvars[inventory_hostname]
-  tags: vars
+- name: start gluster volume
+  gluster_volume:
+    name: '{{ glusterfs_volume_name }}'
+    state: started
+  tags: glusterfs,glusterfs_volume
+
+- name: create gluster mount point
+  file:
+    path: '{{ gluster_volume_mountpoint }}'
+    state: directory
+  tags: glusterfs,glusterfs_volume
+
+- name: mount gluster volume
+  mount:
+    name: '{{ gluster_volume_mountpoint }}'
+    src: "{{ groups.worker[0] }}:{{ glusterfs_volume_name }}"
+    fstype: glusterfs
+    state: mounted
+  tags: glusterfs,glusterfs_volume
