@@ -1,0 +1,27 @@
+- name: check if swarm cluster is created
+  shell: "docker swarm join-token worker |grep 'docker swarm join'"
+  register: swarm_test
+  ignore_errors: true
+  when: "'manager' in group_names"
+  tags: swarm,swarm_init
+
+- name: initialize swarm cluster
+  shell: "docker swarm init --advertise-addr {{ hostvars[groups.manager[0]]['ansible_default_ipv4']['address'] }}"
+  run_once: true
+  delegate_to: "{{ groups.manager[0] }}"
+  when: "swarm_test.rc is defined and swarm_test.rc and 'manager' in group_names"
+  tags: swarm,swarm_init
+
+- name: get swarm tokern for worker
+  shell: "docker swarm join-token worker |grep token | awk -F' ' '{print $2}'"
+  register: swarm_worker_token
+  run_once: true
+  delegate_to: "{{ groups.manager[0] }}"
+  when: "'manager' in group_names"
+  tags: swarm,swarm_init
+
+- name: join worker nodes
+  shell: "docker swarm join --token={{ hostvars[groups.manager[0]]['swarm_worker_token']['stdout'] }} {{ groups.manager[0] }}:2377"
+  when: "'worker' in group_names"
+  ignore_errors: true
+  tags: swarm,swarm_init

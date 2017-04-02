@@ -6,3 +6,4 @@
     - docker
     - nfs
     - glusterfs
+    - swarm
